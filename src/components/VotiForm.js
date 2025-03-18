@@ -16,25 +16,23 @@ function VotiForm({ codice }) {
     bathroom: '',
   });
   const navigate = useNavigate();
-  const [votiEsistenti, setVotiEsistenti] = useState(null);
 
   useEffect(() => {
     const fetchVotiEsistenti = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/voti/${codice}/${localStorage.getItem('nomePersona')}`);
-            if (response.data) {
-                setVotiEsistenti(response.data.voti);
-                setVotes(response.data.voti);
-                setNomePersona(response.data.nomePersona);
-            }
-        } catch (error) {
-            console.error('Errore nel recupero voti:', error);
+      try {
+        const response = await axios.get(`https://voti-bar-backend-production.up.railway.app/voti/${codice}/${localStorage.getItem('nomePersona')}`);
+        if (response.data) {
+          setVotes(response.data.voti);
+          setNomePersona(response.data.nomePersona);
         }
+      } catch (error) {
+        console.error('Errore nel recupero voti:', error);
+      }
     };
 
     if (localStorage.getItem('nomePersona')) {
-        setNomePersona(localStorage.getItem('nomePersona'));
-        fetchVotiEsistenti();
+      setNomePersona(localStorage.getItem('nomePersona'));
+      fetchVotiEsistenti();
     }
   }, [codice]);
 
@@ -45,7 +43,7 @@ function VotiForm({ codice }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/inviaVoti', {
+      await axios.post('https://voti-bar-backend-production.up.railway.app/inviaVoti', {
         codice,
         nomePersona,
         votes,
